@@ -1,0 +1,33 @@
+{% extends 'codec/base.html' %}
+
+{% block content %}
+
+<h1>Home</h1>
+<form method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        <div>
+            <div>
+                <label for="technique">Codec Technique:</label>
+                <select name="technique" id="technique">
+                    <option value="cyclic">Cyclic</option>
+                    <option value="bch">BCH Codes</option>
+                </select>
+            </div>
+            <div>
+                <label for="scheme">Scheme:</label>
+                <select name="scheme" id="scheme">
+                    <option value="encoding">Encoding</option>
+                    <option value="decoding">Decoding</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label for="codecFile">File :</label>
+            <input type="file" id="codecFile" name="codecFile" accept=".txt">
+        </div>
+        <button>Submit</button>
+    </div>
+</form>
+
+{% endblock content %}
