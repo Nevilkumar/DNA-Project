@@ -1,6 +1,6 @@
 # DNA Codec Techniques
 
-<img src='/Readme_images/1.png' />
+<img src='https://github.com/Nevilkumar/DNA-Project/blob/main/Readme_Images/1.png' />
 &nbsp;
-<img src='/Readme_images/2.png' />
+<img src='https://github.com/Nevilkumar/DNA-Project/blob/main/Readme_Images/2.png' />
 &nbsp;
