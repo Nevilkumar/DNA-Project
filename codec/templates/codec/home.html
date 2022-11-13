@@ -1,32 +1,33 @@
 {% extends 'codec/base.html' %}
-
+{% load static %}
 {% block content %}
 
-<h1>Home</h1>
 <form method="post" action="" enctype="multipart/form-data">
     {% csrf_token %}
-    <div>
-        <div>
-            <div>
-                <label for="technique">Codec Technique:</label>
-                <select name="technique" id="technique">
+    <div class="main-container">
+        <div class="select-container">
+            <div class="single-select">
+                <label for="technique" class="select-label">Codec Technique</label>
+                <select class="form-select" name="technique" id="technique">
                     <option value="cyclic">Cyclic</option>
                     <option value="bch">BCH Codes</option>
                 </select>
             </div>
-            <div>
-                <label for="scheme">Scheme:</label>
-                <select name="scheme" id="scheme">
+            <div class="single-select">
+                <label for="scheme" class="select-label">Scheme</label>
+                <select class="form-select" name="scheme" id="scheme">
                     <option value="encoding">Encoding</option>
                     <option value="decoding">Decoding</option>
                 </select>
             </div>
         </div>
-        <div>
-            <label for="codecFile">File :</label>
-            <input type="file" id="codecFile" name="codecFile" accept=".txt">
+        <div class="button-container">
+            <div class="mb-3 mt-4">
+                <label for="codecFile" class="form-label select-label">Codec File</label>
+                <input required class="form-control" type="file" id="codecFile" name="codecFile" accept=".txt">
+            </div>
+            <button type="submit" class="mt-5 submit-btn">Submit</button>
         </div>
-        <button>Submit</button>
     </div>
 </form>
 

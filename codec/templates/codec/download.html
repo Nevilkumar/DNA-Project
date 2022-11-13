@@ -1,7 +1,13 @@
 {% extends 'codec/base.html' %}
-
+{% load static %}
 {% block content %}
 
-<a href="/static/output.txt" download="Decoded.txt">Download</a>
+<div class="main-container">
+    <img class="download-image" src="{% static '/images/download.svg' %}" />
+    <div class="mt-5 download-btn-container">
+        <a href="/" class="back-btn">Back</a>
+        <a class="download-btn" href="/static/output.txt" download="Decoded.txt">Download</a>
+    </div>
+</div>
 
 {% endblock content %}
