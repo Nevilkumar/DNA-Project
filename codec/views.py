@@ -1,9 +1,8 @@
-import code
 from django.shortcuts import render, redirect
-import numpy as np
 from codec.codes import *
 from codec.codes.convolutional import viterbi, viterbi_encoder
 from codec.codes.cyclic import cyclic_code_decoder, cyclic_code_encoder
+from codec.codes.rs import rs_decoding, rs_encoding
 # import sympy
 
 # Create your views here.
@@ -25,9 +24,9 @@ def home(request):
         elif technique == 'convolutional' and scheme == 'decoding':
             viterbi()
         elif technique == 'rs' and scheme == 'encoding':
-            viterbi()
+            rs_encoding()
         elif technique == 'rs' and scheme == 'decoding':
-            viterbi()
+            rs_decoding()
         return redirect('download')
     return render(request, 'codec/home.html')
 
