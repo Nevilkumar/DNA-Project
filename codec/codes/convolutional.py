@@ -1,6 +1,4 @@
-import os
 from django.contrib.staticfiles.storage import staticfiles_storage
-from pathlib import Path
 
 def convert_to_binary(num):
     bnr = bin(num). replace('0b', '')
@@ -52,7 +50,6 @@ def decoding(acgt_string):
 def input_file():
     with open(staticfiles_storage.url('input.txt').strip("/")) as f:
         content = f.read()
-        print(content)
         ascii_values = [ord(ch) for ch in content]
         binary_values = [convert_to_binary(x) for x in ascii_values]
         tuple_input = tuple(''.join(binary_values))
@@ -62,12 +59,9 @@ def input_file():
 
 def decoded_file(decoded_output):
     temp = [decoded_output[i:i+8] for i in range(0, len(decoded_output), 8)]
-    # print(temp)
     binary_values = [''.join([str(x) for x in val]) for val in temp]
-    # print(binary_values)
     decoded_text = ''.join([chr(convert_to_decimal(val))
                            for val in binary_values])
-    # print(decoded_text)
     with open(staticfiles_storage.url('output.txt').strip("/"), 'w+') as f:
         f.write(decoded_text)
 
@@ -102,24 +96,12 @@ def viterbi_encoder():
         # encoded bits
         obs[t] = v_xor(v_xor(s_reg[0], s_reg[1]), s_reg[2]) +\
             v_xor(s_reg[0], s_reg[2])
-        # print(s_reg,state)
     last, second_last = int(inputs[-1]), int(inputs[-2])
     obs.append(str(last ^ second_last)+str(second_last))
     obs.append(str(last)+str(last))
 
     DNA_sequence = ''.join(obs)
     encoding(DNA_sequence)
-
-
-# inputs = ('1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','0')
-# encoded_data = viterbi_encoder(inputs)
-# with open('encoded_file.txt','w+') as f:
-# f.write(encoded_data)
-# print(encoded_data)
-# obs = encoded_data
-# print(encoded_data)
-# obs = ("11","10","11","11","01","01","11")
-
 
 start_metric = {'zero': 0, 'one': 0, 'two': 0, 'three': 0}
 state_machine = {
@@ -153,8 +135,6 @@ def viterbi():
     obs = decoding(sequence)
     obs = [obs[i:i+2] for i in range(0, len(obs), 2)]
 
-    # print(len(obs))
-
     V = [{}]
     for st in state_machine:
         # Calculating the probability of both initial possibilities for the first observation
@@ -170,18 +150,10 @@ def viterbi():
             prev_st = state_machine[st]['b2']['prev_st']
             second_b_metric = V[(t - 1)][prev_st]["metric"] + \
                 bits_diff_num(state_machine[st]['b2']['out_b'], obs[t - 1])
-            # print(state_machine[st]['b1']['out_b'],obs[t - 1],t)
             if first_b_metric > second_b_metric:
                 V[t][st] = {"metric": second_b_metric, "branch": 'b2'}
             else:
                 V[t][st] = {"metric": first_b_metric, "branch": 'b1'}
-
-    # print trellis nodes metric:
-    # for st in state_machine:
-    #     for t in range(0,len(V)):
-    #         print(V[t][st]["metric"])
-    #     print()
-    # print()
 
     smaller = min(V[t][st]["metric"] for st in state_machine)
     decoded_output = []
@@ -194,8 +166,4 @@ def viterbi():
                 decoded_output.append(
                     state_machine[source_state][branch]['input_b'])
                 source_state = state_machine[source_state][branch]['prev_st']
-            # print (source_state+"\n")
     decoded_file(decoded_output[::-1][:-2])
-    # print("Finish")
-    # print(decoded_output)
-    # return decoded_output

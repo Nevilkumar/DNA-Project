@@ -1,5 +1,7 @@
-This is sample text file which needs to be encoded.
+We a group of 9 have created a DNA project for encoding and decoding techniques using different stratagies.
 
-Hello There.
+1.) Cyclic Codes
 
-DAIICT
+2.) RS Codes
+
+3.) Convolutional Codes

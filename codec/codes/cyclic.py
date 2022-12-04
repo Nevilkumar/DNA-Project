@@ -4,8 +4,6 @@ from collections import defaultdict
 gen_matrix = np.array([[1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0], [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
                        [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0]])
 
-cw, msg_lst = [], []
-
 
 def encoding(bin_string):
     prev0, prev1 = 'A', 'G'
@@ -54,6 +52,31 @@ def convert_to_decimal(num):
     return int(num, 2)
 
 
+def msg_codeword_mapping(msg_lst, cw):
+    mapping_cw_msg = defaultdict(lambda: 0)
+    for x, y in zip(msg_lst, cw):
+        mapping_cw_msg[''.join(str(ch) for ch in y)] = x
+
+    return mapping_cw_msg
+
+
+def mapping_1_255():
+
+    binary_val = []
+    for i in range(1, 255):
+        binary_val.append(convert_to_binary(i))
+
+    mat = matrix_generator(binary_val, 8)
+    mapping = mat@gen_matrix % 2
+
+    mapping_dict = defaultdict(lambda: 0)
+    for i in range(len(mapping)):
+        mapping_dict[''.join([str(y) for y in mapping[i]])
+                     ] = convert_to_binary(i)
+
+    return mapping_dict
+
+
 def create_codewords(msg):
     msg_matrix = matrix_generator(msg, 8)
     codeword_matrix = np.dot(msg_matrix, gen_matrix)
@@ -97,10 +120,9 @@ def makeSystematic(G, verbose=True):
 
 
 def cyclic_code_encoder():
-    mapping_cw_msg = defaultdict(lambda: 0)
-
     with open('static/input.txt') as f:
         content = f.readlines()
+        cw, msg_lst = [], []
         lst_encoded_text = ''
         for item in content:
             lst_int = [ord(ch) for ch in item]
@@ -115,26 +137,18 @@ def cyclic_code_encoder():
 
     with open('static/output.txt', 'w+') as f:
         f.write(lst_encoded_text)
-    for x, y in zip(msg_lst, cw):
-        mapping_cw_msg[''.join(str(ch) for ch in y)] = x
 
 
 def cyclic_code_decoder():
     n = 12
-    decoded_output = ""
-    mapping_cw_msg = defaultdict(lambda: 0)
-    for x, y in zip(msg_lst, cw):
-        mapping_cw_msg[''.join(str(ch) for ch in y)] = x
-
     with open('static/input.txt') as f:
         content = f.read()
         decoded_string = decoding(content)
         parts = [decoded_string[i:i+n]
                  for i in range(0, len(decoded_string), n)]
-        # parity_check_matrix = np.array(sympy.Matrix(makeSystematic(gen_matrix, verbose=False)).nullspace()) % 2
-        # codeword_matrix = matrix_generator(parts, n)
-        # decoded_msg = codeword_matrix@parity_check_matrix % 2
+        mapping_cw_msg = mapping_1_255()
         decoded_output = ''.join(
-            [chr(int(str(mapping_cw_msg[p]), 2)) for p in parts])
+            [chr(int(mapping_cw_msg[p], 2)+1) for p in parts])
+
     with open('static/output.txt', 'w+') as f:
         f.write(decoded_output)
