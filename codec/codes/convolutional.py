@@ -1,3 +1,7 @@
+import os
+from django.contrib.staticfiles.storage import staticfiles_storage
+from pathlib import Path
+
 def convert_to_binary(num):
     bnr = bin(num). replace('0b', '')
     x = bnr[::-1]
@@ -30,7 +34,7 @@ def encoding(bin_string):
             else:
                 encoded_string += 'T'
                 prev1 = 'G'
-    with open('static/output.txt', 'w+', encoding="utf-8") as f:
+    with open(staticfiles_storage.url('output.txt').strip("/"), 'w+') as f:
         f.write(encoded_string)
 
 
@@ -45,9 +49,10 @@ def decoding(acgt_string):
     return decoded_string
 
 
-def input_file(file):
-    with open(f'{file}') as f:
+def input_file():
+    with open(staticfiles_storage.url('input.txt').strip("/")) as f:
         content = f.read()
+        print(content)
         ascii_values = [ord(ch) for ch in content]
         binary_values = [convert_to_binary(x) for x in ascii_values]
         tuple_input = tuple(''.join(binary_values))
@@ -63,7 +68,7 @@ def decoded_file(decoded_output):
     decoded_text = ''.join([chr(convert_to_decimal(val))
                            for val in binary_values])
     # print(decoded_text)
-    with open('static/output.txt', 'w+', encoding="utf-8") as f:
+    with open(staticfiles_storage.url('output.txt').strip("/"), 'w+') as f:
         f.write(decoded_text)
 
 
@@ -82,7 +87,7 @@ def v_xor(bit0, bit1):
 
 
 def viterbi_encoder():
-    inputs = input_file('static/input.txt')
+    inputs = input_file()
     # shift register encoder
     s_reg = ["0", "0", "0"]
     obs = []
@@ -141,7 +146,7 @@ def bits_diff_num(num_1, num_2):
 
 def viterbi():
     obs = ""
-    with open('static/input.txt') as f:
+    with open(staticfiles_storage.url('input.txt').strip("/")) as f:
         obs = f.readlines()
     # Trellis structure
     sequence = ''.join(obs)
