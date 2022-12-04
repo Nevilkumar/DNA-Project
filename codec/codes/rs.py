@@ -1,4 +1,3 @@
-
 class ReedSolomon:
 
     def __init__(self, field, gen, msglen, ecclen):
