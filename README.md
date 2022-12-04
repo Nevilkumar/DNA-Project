@@ -9,6 +9,10 @@ This project is aimed at creating DNA encoding techniques using Cyclic Codes, Co
 
 The python implementation of all the codecs can be found in the **codes** subfolder of the **codec** folder. 
 
+### Website Link
+
+The working webpage can be found at the following link [http://nevil.pythonanywhere.com/](http://nevil.pythonanywhere.com/)
+
 
 <img src='https://github.com/Nevilkumar/DNA-Project/blob/main/Readme_Images/home.png' />
 &nbsp;
